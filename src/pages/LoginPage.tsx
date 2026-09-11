@@ -1,17 +1,17 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Activity, GraduationCap, Shield, Wrench, ArrowRight } from 'lucide-react';
+import { Activity, GraduationCap, Shield, Wrench, ArrowRight, Sparkles, CheckCircle2, Cpu } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import type { UserRole } from '../types';
 
 const roles: { role: UserRole; icon: typeof GraduationCap; title: string; description: string; color: string }[] = [
-  { role: 'student', icon: GraduationCap, title: 'Student', description: 'Report campus problems and track their resolution', color: 'from-blue-500 to-blue-600' },
-  { role: 'staff', icon: Wrench, title: 'Department Staff', description: 'Manage assigned issues and update resolution status', color: 'from-amber-500 to-amber-600' },
-  { role: 'admin', icon: Shield, title: 'Administrator', description: 'Full dashboard access with AI insights and analytics', color: 'from-primary-500 to-primary-600' },
+  { role: 'student', icon: GraduationCap, title: 'Student', description: 'Report campus problems, upload photos, and track resolution status in real-time', color: 'from-cyan-400 to-blue-600' },
+  { role: 'staff', icon: Wrench, title: 'Department Staff', description: 'Manage assigned tickets, log maintenance updates, and report actions', color: 'from-amber-400 to-orange-500' },
+  { role: 'admin', icon: Shield, title: 'Administrator', description: 'Full AI Command Center access with neural telemetry and recurring heatmap analytics', color: 'from-purple-500 to-pink-500' },
 ];
 
 export default function LoginPage() {
-  const [selectedRole, setSelectedRole] = useState<UserRole | null>(null);
+  const [selectedRole, setSelectedRole] = useState<UserRole | null>('student');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { dispatch } = useApp();
@@ -26,71 +26,124 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-primary-50/30 to-slate-50 dark:from-slate-950 dark:via-primary-950/20 dark:to-slate-950 flex items-center justify-center p-4">
-      <div className="w-full max-w-lg">
-        {/* Logo */}
+    <div className="min-h-screen bg-[#040711] text-slate-100 flex items-center justify-center p-4 relative overflow-hidden font-sans select-none">
+      
+      {/* Ambient Radial Background Glows */}
+      <div className="fixed inset-0 pointer-events-none z-0">
+        <div className="absolute top-1/4 left-1/3 w-[500px] h-[500px] bg-cyan-500/10 rounded-full blur-[130px]" />
+        <div className="absolute bottom-1/4 right-1/3 w-[500px] h-[500px] bg-purple-600/15 rounded-full blur-[140px]" />
+      </div>
+
+      {/* Cyber Grid Background */}
+      <div className="fixed inset-0 pointer-events-none opacity-[0.04] bg-[linear-gradient(to_right,#38bdf8_1px,transparent_1px),linear-gradient(to_bottom,#38bdf8_1px,transparent_1px)] bg-[size:3.5rem_3.5rem] z-0" />
+
+      <div className="w-full max-w-lg relative z-10 my-auto">
+        
+        {/* Logo & Header */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center gap-2.5 mb-4">
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center shadow-xl shadow-primary-500/25">
-              <Activity className="w-7 h-7 text-white" />
+          <div 
+            onClick={() => navigate('/')} 
+            className="inline-flex items-center gap-3 cursor-pointer group mb-3"
+          >
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-cyan-400 via-blue-600 to-purple-600 p-[1.5px] shadow-[0_0_25px_rgba(0,198,255,0.4)] group-hover:scale-105 transition-transform">
+              <div className="w-full h-full bg-[#070b1e] rounded-[14px] flex items-center justify-center">
+                <Activity className="w-6 h-6 text-cyan-400 animate-pulse" />
+              </div>
             </div>
+            <span className="font-extrabold text-3xl tracking-tight text-white">
+              Campus<span className="text-cyan-400">TIQ</span>
+            </span>
           </div>
-          <h1 className="text-3xl font-extrabold text-gray-900 dark:text-white">
-            Campus<span className="text-primary-600">IQ</span>
-          </h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Campus Problem Intelligence</p>
+
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900/80 border border-cyan-500/30 text-cyan-400 text-xs font-mono tracking-wider uppercase shadow-[0_0_12px_rgba(6,182,212,0.15)]">
+            <Cpu className="w-3.5 h-3.5" />
+            <span>AUTHENTICATION GATEWAY</span>
+          </div>
         </div>
 
-        {/* Login card */}
-        <div className="bg-white dark:bg-slate-800 rounded-2xl border border-gray-200 dark:border-slate-700 shadow-xl p-8">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-1">Welcome back</h2>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">Select your role to continue</p>
-
-          <div className="space-y-3 mb-6">
-            {roles.map((r) => (
-              <button
-                key={r.role}
-                onClick={() => setSelectedRole(r.role)}
-                className={`w-full flex items-center gap-4 p-4 rounded-xl border-2 transition-all duration-200
-                  ${selectedRole === r.role
-                    ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20 shadow-md'
-                    : 'border-gray-200 dark:border-slate-600 hover:border-primary-300 hover:bg-gray-50 dark:hover:bg-slate-700'
-                  }`}
-              >
-                <div className={`w-11 h-11 rounded-xl bg-gradient-to-br ${r.color} flex items-center justify-center text-white shadow-lg`}>
-                  <r.icon className="w-5 h-5" />
-                </div>
-                <div className="text-left flex-1">
-                  <p className="font-semibold text-gray-900 dark:text-white">{r.title}</p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">{r.description}</p>
-                </div>
-                <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center
-                  ${selectedRole === r.role ? 'border-primary-500 bg-primary-500' : 'border-gray-300 dark:border-slate-500'}`}>
-                  {selectedRole === r.role && <div className="w-2 h-2 rounded-full bg-white" />}
-                </div>
-              </button>
-            ))}
+        {/* Cyber Login Role Selection Card */}
+        <div className="cyber-card rounded-3xl p-6 sm:p-8 relative backdrop-blur-xl">
+          
+          <div className="mb-6">
+            <h2 className="text-2xl font-extrabold text-white tracking-tight">Select Access Role</h2>
+            <p className="text-xs text-slate-400 mt-1">Choose your account role to initialize session parameters</p>
           </div>
 
+          {/* Role Cards List */}
+          <div className="space-y-3.5 mb-8">
+            {roles.map((r) => {
+              const isSelected = selectedRole === r.role;
+              return (
+                <button
+                  key={r.role}
+                  onClick={() => setSelectedRole(r.role)}
+                  className={`w-full flex items-center gap-4 p-4 rounded-2xl border transition-all duration-300 text-left relative overflow-hidden group ${
+                    isSelected
+                      ? 'border-cyan-400 bg-gradient-to-r from-cyan-500/15 via-indigo-500/10 to-purple-500/10 shadow-[0_0_25px_rgba(0,198,255,0.25)]'
+                      : 'border-slate-800 bg-slate-950/60 hover:border-cyan-500/40 hover:bg-slate-900/60'
+                  }`}
+                >
+                  {/* Glowing selection highlight edge */}
+                  {isSelected && (
+                    <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-cyan-400 to-purple-500" />
+                  )}
+
+                  <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${r.color} flex items-center justify-center text-slate-950 font-bold shadow-lg flex-shrink-0 group-hover:scale-105 transition-transform`}>
+                    <r.icon className="w-6 h-6" />
+                  </div>
+
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between">
+                      <p className={`font-bold text-sm ${isSelected ? 'text-cyan-300' : 'text-white'}`}>
+                        {r.title}
+                      </p>
+                      {isSelected && (
+                        <span className="text-[10px] font-mono font-bold text-cyan-400 bg-cyan-500/20 px-2 py-0.5 rounded-full border border-cyan-500/30">
+                          SELECTED
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-xs text-slate-400 mt-0.5 leading-relaxed truncate sm:whitespace-normal">
+                      {r.description}
+                    </p>
+                  </div>
+
+                  {/* Radio Indicator */}
+                  <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-colors ${
+                    isSelected ? 'border-cyan-400 bg-cyan-500/20' : 'border-slate-700'
+                  }`}>
+                    {isSelected && <div className="w-2.5 h-2.5 rounded-full bg-cyan-400 shadow-[0_0_8px_#06b6d4]" />}
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Submit Button */}
           <button
             onClick={handleLogin}
             disabled={!selectedRole || loading}
-            className="w-full flex items-center justify-center gap-2 py-3.5 bg-gradient-to-r from-primary-600 to-primary-700 text-white font-semibold rounded-xl hover:shadow-lg hover:shadow-primary-500/25 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full flex items-center justify-center gap-2 py-4 rounded-full text-sm font-extrabold text-white gradient-btn-primary shadow-xl disabled:opacity-50 disabled:cursor-not-allowed transition-all"
           >
             {loading ? (
-              <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+              <div className="flex items-center gap-2">
+                <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                <span>INITIALIZING SESSION...</span>
+              </div>
             ) : (
               <>
-                Sign In
-                <ArrowRight className="w-4 h-4" />
+                <span>Launch Portal</span>
+                <ArrowRight className="w-4.5 h-4.5" />
               </>
             )}
           </button>
 
-          <p className="text-xs text-center text-gray-400 dark:text-gray-500 mt-4">
-            Demo mode — no credentials required
+          <p className="text-[11px] font-mono text-center text-slate-500 mt-4 flex items-center justify-center gap-1.5">
+            <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+            <span>DEMO MODE ACTIVE • DIRECT ACCESS GRANTED</span>
           </p>
         </div>
+
       </div>
     </div>
   );

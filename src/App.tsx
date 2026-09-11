@@ -1,5 +1,8 @@
+import { useState, type ReactNode } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AppProvider, useApp } from './context/AppContext';
+import CinematicLoadingScreen from './components/shared/CinematicLoadingScreen';
+import CyberCursorTrail from './components/shared/CyberCursorTrail';
 import DashboardLayout from './components/layout/DashboardLayout';
 import LandingPage from './pages/LandingPage';
 import LoginPage from './pages/LoginPage';
@@ -19,11 +22,11 @@ import CampusHeatmap from './pages/admin/CampusHeatmap';
 import Analytics from './pages/admin/Analytics';
 import Reports from './pages/admin/Reports';
 import Settings from './pages/admin/Settings';
-import type { ReactNode } from 'react';
+
 
 function ProtectedRoute({ children, allowedRoles }: { children: ReactNode; allowedRoles?: string[] }) {
   const { state } = useApp();
-  if (!state.currentUser) return <Navigate to="/login" replace />;
+  if (!state.currentUser) return <Navigate to="/" replace />;
   if (allowedRoles && state.userRole && !allowedRoles.includes(state.userRole)) {
     return <Navigate to="/" replace />;
   }
@@ -84,11 +87,24 @@ function AppRoutes() {
 }
 
 export default function App() {
+  const [loading, setLoading] = useState(true);
+
+  const handleLoadingComplete = () => {
+    setLoading(false);
+    // Ensure initial entry point lands on the Landing Page
+    if (window.location.pathname === '/login') {
+      window.history.replaceState(null, '', '/');
+    }
+  };
+
   return (
     <BrowserRouter>
       <AppProvider>
+        <CyberCursorTrail />
+        {loading && <CinematicLoadingScreen onComplete={handleLoadingComplete} />}
         <AppRoutes />
       </AppProvider>
     </BrowserRouter>
   );
 }
+

@@ -1,38 +1,42 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Activity, Brain, BarChart3, Building2, CheckCircle2, Clock,
   FileText, ArrowRight, Zap, RefreshCcw, Target, TrendingUp,
-  Shield, Users, ChevronRight, Sparkles
+  Shield, Users, ChevronRight, Sparkles, Settings, Mouse, BarChart
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
+import CinematicLoadingScreen from '../components/shared/CinematicLoadingScreen';
+import Hero3DMockup from '../components/shared/Hero3DMockup';
 
-const features = [
-  { icon: FileText, title: 'Smart Problem Reporting', description: 'Easily report campus issues with detailed forms, image uploads, and anonymous reporting options.' },
-  { icon: Brain, title: 'AI Issue Detection', description: 'Advanced AI analyzes reports to categorize, assess severity, and identify critical patterns.' },
-  { icon: RefreshCcw, title: 'Recurring Issue Analysis', description: 'Automatically detects recurring problems and alerts administration for systemic fixes.' },
-  { icon: Target, title: 'Automatic Prioritization', description: 'AI-powered priority scoring considers severity, frequency, and impact on students.' },
-  { icon: Building2, title: 'Department Assignment', description: 'Intelligent routing assigns issues to the right department automatically.' },
-  { icon: CheckCircle2, title: 'Resolution Tracking', description: 'Track every issue from report to resolution with real-time status updates.' },
+const featuresList = [
+  { icon: FileText, title: 'Smart Problem Reporting', description: 'Students report campus issues effortlessly with image attachments, priority tags, and location data.' },
+  { icon: Brain, title: 'AI Issue Detection', description: 'Advanced neural network categorizes, assesses severity, and detects critical systemic failures automatically.' },
+  { icon: RefreshCcw, title: 'Recurring Issue Analysis', description: 'Identifies recurring campus infrastructure problems and flags them for preventive maintenance.' },
+  { icon: Target, title: 'Automatic Prioritization', description: 'AI priority scoring algorithm ranks issues based on urgency, affected users, and safety impact.' },
+  { icon: Building2, title: 'Department Assignment', description: 'Intelligently routes reports directly to responsible university departments without manual intervention.' },
+  { icon: CheckCircle2, title: 'Real-time Resolution Tracking', description: 'End-to-end status telemetry keeping students and administration informed at every stage.' },
 ];
 
-const stats = [
-  { value: '2,847', label: 'Problems Reported', icon: FileText },
-  { value: '2,391', label: 'Problems Resolved', icon: CheckCircle2 },
-  { value: '186', label: 'Recurring Issues Detected', icon: RefreshCcw },
-  { value: '2.4 Days', label: 'Avg Resolution Time', icon: Clock },
+const statsList = [
+  { value: '2,847', label: 'Problems Reported', icon: FileText, change: '+14% this month' },
+  { value: '2,391', label: 'Problems Resolved', icon: CheckCircle2, change: '84% success rate' },
+  { value: '186', label: 'Recurring Issues Flagged', icon: RefreshCcw, change: 'Preventive AI' },
+  { value: '2.4 Hrs', label: 'Avg Resolution Time', icon: Clock, change: '32% faster' },
 ];
 
-const flowSteps = [
-  { icon: FileText, label: 'Student Report', color: 'from-blue-500 to-blue-600' },
-  { icon: Brain, label: 'AI Analysis', color: 'from-purple-500 to-purple-600' },
-  { icon: Target, label: 'Priority Detection', color: 'from-orange-500 to-orange-600' },
-  { icon: Building2, label: 'Dept Assignment', color: 'from-indigo-500 to-indigo-600' },
-  { icon: CheckCircle2, label: 'Resolution', color: 'from-green-500 to-green-600' },
+const howItWorksSteps = [
+  { icon: FileText, step: '01', title: 'Student Reports Issue', description: 'Students submit campus problems via web or mobile app in under 30 seconds.' },
+  { icon: Brain, step: '02', title: 'AI Analyzes & Scores', description: 'Neural models categorize urgency, detect duplicates, and assign priority scores.' },
+  { icon: Building2, step: '03', title: 'Department Dispatched', description: 'Target department receives instant notification and action item directives.' },
+  { icon: CheckCircle2, step: '04', title: 'Resolved & Verified', description: 'Issue closed with photo proof and real-time notification sent to student.' },
 ];
 
 export default function LandingPage() {
   const navigate = useNavigate();
   const { state } = useApp();
+  const [showCinematic, setShowCinematic] = useState(false);
+  const [activeTab, setActiveTab] = useState('Home');
 
   const handleNavigate = (path: string) => {
     if (state.currentUser) {
@@ -42,180 +46,341 @@ export default function LandingPage() {
     }
   };
 
+  const handleNavClick = (tabName: string) => {
+    setActiveTab(tabName);
+    if (tabName === 'Home') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else if (tabName === 'Features') {
+      const el = document.getElementById('features');
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    } else if (tabName === 'Analytics') {
+      const el = document.getElementById('analytics');
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    } else if (tabName === 'About') {
+      const el = document.getElementById('about');
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-white dark:bg-slate-950">
-      {/* Navbar */}
-      <nav className="fixed top-0 w-full z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl border-b border-gray-100 dark:border-slate-800">
+    <div className="min-h-screen bg-[#040711] text-slate-100 relative overflow-hidden font-sans select-none">
+      {showCinematic && (
+        <CinematicLoadingScreen onComplete={() => setShowCinematic(false)} forceShow />
+      )}
+
+      {/* Ambient Radial Background Glows */}
+      <div className="fixed inset-0 pointer-events-none z-0">
+        <div className="absolute -top-32 -left-32 w-[600px] h-[600px] bg-cyan-500/10 rounded-full blur-[140px]" />
+        <div className="absolute top-1/3 -right-32 w-[700px] h-[700px] bg-purple-600/15 rounded-full blur-[160px]" />
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[900px] h-[400px] bg-blue-600/10 rounded-full blur-[150px]" />
+      </div>
+
+      {/* Cyber Grid Pattern */}
+      <div className="fixed inset-0 pointer-events-none opacity-[0.04] bg-[linear-gradient(to_right,#38bdf8_1px,transparent_1px),linear-gradient(to_bottom,#38bdf8_1px,transparent_1px)] bg-[size:3.5rem_3.5rem] z-0" />
+
+      {/* Top Navbar */}
+      <nav className="fixed top-0 w-full z-50 bg-[#040711]/85 backdrop-blur-2xl border-b border-slate-800/80 shadow-[0_4px_30px_rgba(0,0,0,0.8)]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center gap-2.5">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center shadow-lg shadow-primary-500/25">
-                <Activity className="w-5 h-5 text-white" />
+          <div className="flex items-center justify-between h-20">
+            
+            {/* Logo */}
+            <div 
+              onClick={() => handleNavClick('Home')} 
+              className="flex items-center gap-3 cursor-pointer group"
+            >
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-400 via-blue-600 to-purple-600 p-[1.5px] shadow-[0_0_20px_rgba(0,198,255,0.4)] group-hover:scale-105 transition-transform">
+                <div className="w-full h-full bg-[#070b1e] rounded-[10px] flex items-center justify-center">
+                  <Activity className="w-5 h-5 text-cyan-400 animate-pulse" />
+                </div>
               </div>
-              <span className="font-bold text-xl text-gray-900 dark:text-white">
-                Campus<span className="text-primary-600">IQ</span>
+              <span className="font-extrabold text-2xl tracking-tight text-white">
+                Campus<span className="text-cyan-400">TIQ</span>
               </span>
             </div>
+
+            {/* Nav Links (Centered & Fully Interactive) */}
+            <div className="hidden md:flex items-center gap-8 bg-slate-900/60 px-6 py-2 rounded-full border border-slate-800/80 backdrop-blur-md">
+              {[
+                { name: 'Home', action: () => handleNavClick('Home') },
+                { name: 'Features', action: () => handleNavClick('Features') },
+                { name: 'Analytics', action: () => handleNavClick('Analytics') },
+                { name: 'About', action: () => handleNavClick('About') },
+              ].map((tab) => (
+                <button
+                  key={tab.name}
+                  onClick={tab.action}
+                  className={`relative text-sm font-medium transition-colors ${
+                    activeTab === tab.name ? 'text-white font-semibold' : 'text-slate-400 hover:text-cyan-300'
+                  }`}
+                >
+                  {tab.name}
+                  {activeTab === tab.name && (
+                    <span className="absolute -bottom-2 left-0 w-full h-[2.5px] bg-gradient-to-r from-cyan-400 to-purple-500 rounded-full shadow-[0_0_8px_#06b6d4]" />
+                  )}
+                </button>
+              ))}
+            </div>
+
+            {/* Action Buttons */}
             <div className="flex items-center gap-3">
               <button
-                onClick={() => navigate('/login')}
-                className="px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary-600 transition-colors"
+                onClick={() => setShowCinematic(true)}
+                className="hidden lg:inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono bg-slate-900/90 text-cyan-400 rounded-full border border-cyan-500/30 hover:border-cyan-400 transition-all hover:shadow-[0_0_15px_rgba(6,182,212,0.3)]"
+                title="Replay Cinematic Intro"
               >
-                Sign In
+                <Zap className="w-3.5 h-3.5 text-yellow-400" />
+                <span>Replay Intro</span>
               </button>
+
               <button
                 onClick={() => navigate('/login')}
-                className="px-5 py-2.5 bg-gradient-to-r from-primary-600 to-primary-700 text-white text-sm font-semibold rounded-xl hover:shadow-lg hover:shadow-primary-500/25 transition-all hover:-translate-y-0.5"
+                className="px-5 py-2.5 rounded-full text-xs font-semibold text-slate-200 glass-btn-secondary flex items-center gap-1.5"
+              >
+                <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+                Sign In
+              </button>
+
+              <button
+                onClick={() => navigate('/login')}
+                className="px-6 py-2.5 rounded-full text-xs font-extrabold text-white gradient-btn-primary flex items-center gap-1.5"
               >
                 Get Started
+                <ArrowRight className="w-4 h-4" />
               </button>
             </div>
           </div>
         </div>
       </nav>
 
-      {/* Hero */}
-      <section className="pt-32 pb-20 px-4 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-primary-50/50 to-transparent dark:from-primary-950/20 dark:to-transparent" />
-        <div className="absolute top-20 left-1/4 w-72 h-72 bg-primary-200/30 rounded-full blur-3xl" />
-        <div className="absolute bottom-10 right-1/4 w-96 h-96 bg-purple-200/20 rounded-full blur-3xl" />
+      {/* Main Hero Showcase Section */}
+      <section id="hero" className="pt-36 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+          
+          {/* Left Hero Column */}
+          <div className="lg:col-span-5 flex flex-col items-start text-left">
+            
+            {/* Top Pill Badge */}
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#0c122b] border border-cyan-500/30 text-cyan-300 text-xs font-mono tracking-wider uppercase mb-6 shadow-[0_0_20px_rgba(0,198,255,0.15)]">
+              <Sparkles className="w-3.5 h-3.5 text-cyan-400 animate-pulse" />
+              <span>AI-POWERED CAMPUS INTELLIGENCE CORE</span>
+            </div>
 
-        <div className="max-w-5xl mx-auto text-center relative">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary-50 dark:bg-primary-900/30 rounded-full mb-6">
-            <Sparkles className="w-4 h-4 text-primary-600" />
-            <span className="text-sm font-semibold text-primary-700 dark:text-primary-300">AI-Powered Campus Intelligence</span>
-          </div>
+            {/* Headline */}
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.1] mb-6">
+              Make Your Campus <br />
+              <span className="gradient-hero-title">Smarter & Responsive</span>
+            </h1>
 
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 dark:text-white leading-tight mb-6">
-            Make Your Campus{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-600 via-purple-600 to-primary-600">
-              Smarter
-            </span>
-          </h1>
-
-          <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto mb-10 leading-relaxed">
-            Students report campus problems and our AI helps institutions identify, prioritize,
-            and resolve recurring issues — transforming complaints into actionable intelligence.
-          </p>
-
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <button
-              onClick={() => handleNavigate('/student/report')}
-              className="flex items-center gap-2 px-7 py-3.5 bg-gradient-to-r from-primary-600 to-primary-700 text-white font-semibold rounded-xl hover:shadow-xl hover:shadow-primary-500/25 transition-all hover:-translate-y-0.5 text-base"
-            >
-              <FileText className="w-5 h-5" />
-              Report a Problem
-            </button>
-            <button
-              onClick={() => handleNavigate('/admin')}
-              className="flex items-center gap-2 px-7 py-3.5 bg-white dark:bg-slate-800 text-gray-700 dark:text-gray-200 font-semibold rounded-xl border border-gray-200 dark:border-slate-600 hover:shadow-lg transition-all hover:-translate-y-0.5 text-base"
-            >
-              <BarChart3 className="w-5 h-5" />
-              View Dashboard
-            </button>
-          </div>
-
-          <p className="text-sm text-gray-400 dark:text-gray-500 mt-4 italic">
-            "Report. Analyze. Resolve."
-          </p>
-        </div>
-      </section>
-
-      {/* Flow visualization */}
-      <section className="py-16 px-4 bg-gray-50 dark:bg-slate-900">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="text-2xl font-bold text-center text-gray-900 dark:text-white mb-10">How CampusIQ Works</h2>
-          <div className="flex flex-col md:flex-row items-center justify-center gap-3 md:gap-2">
-            {flowSteps.map((step, i) => (
-              <div key={i} className="flex items-center gap-2 md:gap-2">
-                <div className="flex flex-col items-center gap-2">
-                  <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${step.color} flex items-center justify-center text-white shadow-lg`}>
-                    <step.icon className="w-7 h-7" />
-                  </div>
-                  <span className="text-xs font-semibold text-gray-600 dark:text-gray-300 text-center whitespace-nowrap">{step.label}</span>
-                </div>
-                {i < flowSteps.length - 1 && (
-                  <ChevronRight className="w-5 h-5 text-gray-300 dark:text-gray-600 hidden md:block mt-[-20px]" />
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Features */}
-      <section className="py-20 px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-14">
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">Powerful Features</h2>
-            <p className="text-gray-500 dark:text-gray-400 max-w-2xl mx-auto">
-              Everything you need to transform campus problem management with intelligent automation.
+            {/* Description */}
+            <p className="text-base sm:text-lg text-slate-300 leading-relaxed mb-8 max-w-xl">
+              Students report campus problems in real-time. Our AI system analyzes,
+              prioritizes, and routes recurring issues to departments — transforming
+              complaints into actionable intelligence.
             </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {features.map((feature, i) => (
-              <div
-                key={i}
-                className="group p-6 bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700 hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+
+            {/* Action Buttons */}
+            <div className="flex flex-wrap items-center gap-4 mb-8 w-full sm:w-auto">
+              <button
+                onClick={() => handleNavigate('/student/report')}
+                className="flex-1 sm:flex-initial px-7 py-3.5 rounded-full text-sm font-extrabold text-white gradient-btn-primary flex items-center justify-center gap-2 shadow-lg"
               >
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center text-white mb-4 shadow-lg shadow-primary-500/20 group-hover:scale-110 transition-transform">
-                  <feature.icon className="w-6 h-6" />
-                </div>
-                <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">{feature.title}</h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">{feature.description}</p>
+                <FileText className="w-4.5 h-4.5" />
+                <span>Report a Problem</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+
+              <button
+                onClick={() => handleNavigate('/admin')}
+                className="flex-1 sm:flex-initial px-7 py-3.5 rounded-full text-sm font-bold text-slate-200 glass-btn-secondary flex items-center justify-center gap-2"
+              >
+                <BarChart3 className="w-4.5 h-4.5 text-cyan-400" />
+                <span>View Dashboard</span>
+              </button>
+            </div>
+
+            {/* Feature Checkmarks */}
+            <div className="flex flex-wrap items-center gap-6 text-xs sm:text-sm font-medium text-slate-300">
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-cyan-400" />
+                <span>Real-time Reporting</span>
               </div>
-            ))}
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-purple-400" />
+                <span>AI Prioritization</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-pink-400" />
+                <span>Faster Resolution</span>
+              </div>
+            </div>
           </div>
+
+          {/* Right Hero Column: Liquid-Smooth 3D Mockup */}
+          <div className="lg:col-span-7">
+            <Hero3DMockup />
+          </div>
+        </div>
+
+        {/* Scroll to Explore Mouse Indicator */}
+        <div 
+          onClick={() => handleNavClick('About')}
+          className="mt-16 sm:mt-24 flex flex-col items-center justify-center gap-2 text-slate-400 text-xs font-mono cursor-pointer hover:text-cyan-400 transition-colors"
+        >
+          <div className="w-5 h-8 rounded-full border-2 border-slate-700 flex items-center justify-center p-1">
+            <div className="w-1 h-2 rounded-full bg-cyan-400 animate-bounce" />
+          </div>
+          <span>Scroll to explore</span>
         </div>
       </section>
 
-      {/* Stats */}
-      <section className="py-20 px-4 bg-gradient-to-br from-slate-900 via-primary-900 to-slate-900">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-2xl font-bold text-center text-white mb-12">Platform Impact</h2>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-            {stats.map((stat, i) => (
-              <div
-                key={i}
-                className="text-center p-6 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10"
-              >
-                <stat.icon className="w-8 h-8 text-primary-400 mx-auto mb-3" />
-                <p className="text-3xl font-extrabold text-white mb-1">{stat.value}</p>
-                <p className="text-sm text-gray-300">{stat.label}</p>
-              </div>
-            ))}
+      {/* About Section: How CampusTIQ Works */}
+      <section id="about" className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative z-10 border-t border-slate-800/80">
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-mono uppercase mb-4">
+            <Brain className="w-3.5 h-3.5" />
+            <span>HOW CAMPUSTIQ WORKS</span>
           </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="py-20 px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-            Ready to Make Your Campus Smarter?
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight mb-4">
+            From Student Complaint to Actionable Intelligence
           </h2>
-          <p className="text-gray-500 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
-            Join the platform that converts unstructured student complaints into actionable intelligence for campus administrators.
+          <p className="text-slate-400 max-w-2xl mx-auto text-base">
+            Our 4-step intelligent pipeline replaces traditional chaotic complaint box queues with real-time telemetry and automated resolution.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {howItWorksSteps.map((item, idx) => (
+            <div key={idx} className="cyber-card p-6 rounded-2xl relative group">
+              <span className="text-4xl font-black text-cyan-500/20 group-hover:text-cyan-400/40 transition-colors absolute top-4 right-4 font-mono">
+                {item.step}
+              </span>
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-400 to-indigo-600 flex items-center justify-center text-slate-950 font-bold mb-5 shadow-lg shadow-cyan-500/20">
+                <item.icon className="w-6 h-6" />
+              </div>
+              <h3 className="text-lg font-bold text-white mb-2">{item.title}</h3>
+              <p className="text-xs text-slate-400 leading-relaxed">{item.description}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section id="features" className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative z-10 border-t border-slate-800/80">
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-purple-500/10 border border-purple-500/30 text-purple-400 text-xs font-mono uppercase mb-4">
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>POWERFUL FEATURES</span>
+          </div>
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight mb-4">
+            Engineered for Campus Governance
+          </h2>
+          <p className="text-slate-400 max-w-2xl mx-auto text-base">
+            Designed specifically for educational institutions seeking seamless incident management and campus optimization.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {featuresList.map((feature, i) => (
+            <div
+              key={i}
+              className="cyber-card p-6 rounded-2xl group hover:-translate-y-1 transition-all duration-300"
+            >
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-400 via-indigo-600 to-purple-600 p-[1px] mb-5 shadow-lg shadow-cyan-500/20">
+                <div className="w-full h-full bg-[#080d22] rounded-[11px] flex items-center justify-center">
+                  <feature.icon className="w-6 h-6 text-cyan-400 group-hover:scale-110 transition-transform" />
+                </div>
+              </div>
+              <h3 className="text-lg font-bold text-white mb-2">{feature.title}</h3>
+              <p className="text-xs text-slate-400 leading-relaxed">{feature.description}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Analytics & Impact Section */}
+      <section id="analytics" className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative z-10 border-t border-slate-800/80">
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono uppercase mb-4">
+            <TrendingUp className="w-3.5 h-3.5" />
+            <span>REAL-TIME PLATFORM IMPACT</span>
+          </div>
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight mb-4">
+            Proven Institutional Analytics
+          </h2>
+          <p className="text-slate-400 max-w-2xl mx-auto text-base">
+            Empowering administrators with real-time resolution metrics and data-driven insights.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+          {statsList.map((stat, idx) => (
+            <div key={idx} className="cyber-card p-6 rounded-2xl text-center">
+              <stat.icon className="w-8 h-8 text-cyan-400 mx-auto mb-3 animate-pulse" />
+              <p className="text-3xl font-black text-white tracking-tight mb-1">{stat.value}</p>
+              <p className="text-xs font-mono uppercase text-slate-400 tracking-wider mb-2">{stat.label}</p>
+              <span className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-mono bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">
+                {stat.change}
+              </span>
+            </div>
+          ))}
+        </div>
+
+        {/* View Full Analytics Portal Button */}
+        <div className="flex justify-center">
+          <button
+            onClick={() => handleNavigate('/admin/analytics')}
+            className="px-8 py-3.5 rounded-full text-sm font-extrabold text-white gradient-btn-primary flex items-center gap-2 shadow-xl"
+          >
+            <BarChart3 className="w-4.5 h-4.5" />
+            <span>Explore Full Analytics Dashboard</span>
+            <ArrowRight className="w-4 h-4" />
+          </button>
+        </div>
+      </section>
+
+      {/* Call To Action Banner */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto relative z-10">
+        <div className="cyber-card p-10 sm:p-14 rounded-3xl text-center relative overflow-hidden">
+          <div className="absolute -right-20 -bottom-20 w-64 h-64 bg-cyan-500/20 rounded-full blur-3xl pointer-events-none" />
+          <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight mb-4">
+            Ready to Transform Your Campus Governance?
+          </h2>
+          <p className="text-slate-300 max-w-xl mx-auto text-sm sm:text-base mb-8">
+            Deploy CampusTIQ today and convert unstructured student feedback into automated resolution workflows.
           </p>
           <button
             onClick={() => navigate('/login')}
-            className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-primary-600 to-primary-700 text-white font-semibold rounded-xl hover:shadow-xl hover:shadow-primary-500/25 transition-all hover:-translate-y-0.5 text-lg"
+            className="px-9 py-4 rounded-full text-base font-extrabold text-slate-950 bg-gradient-to-r from-cyan-400 via-sky-300 to-indigo-300 hover:shadow-[0_0_30px_rgba(6,182,212,0.5)] transition-all hover:-translate-y-1 inline-flex items-center gap-2"
           >
-            Get Started Now
+            <span>Get Started Now</span>
             <ArrowRight className="w-5 h-5" />
           </button>
         </div>
       </section>
 
+      {/* Cyber Digital Wave Graphic Overlay */}
+      <div className="w-full relative overflow-hidden -mt-12 pointer-events-none opacity-80 z-0">
+        <svg className="w-full h-40 text-cyan-500/20" viewBox="0 0 1440 200" fill="none" preserveAspectRatio="none">
+          <path d="M0 100 C360 200, 720 0, 1080 150 C1260 225, 1380 50, 1440 80 L1440 200 L0 200 Z" fill="url(#wave-gradient)" />
+          <defs>
+            <linearGradient id="wave-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="rgba(0, 198, 255, 0.25)" />
+              <stop offset="50%" stopColor="rgba(123, 44, 191, 0.2)" />
+              <stop offset="100%" stopColor="rgba(217, 70, 239, 0.15)" />
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+
       {/* Footer */}
-      <footer className="py-8 px-4 border-t border-gray-100 dark:border-slate-800">
-        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+      <footer className="py-8 px-4 border-t border-slate-800/80 z-10 relative bg-[#040711]/90">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <Activity className="w-5 h-5 text-primary-600" />
-            <span className="font-bold text-gray-900 dark:text-white">Campus<span className="text-primary-600">IQ</span></span>
-            <span className="text-sm text-gray-400 ml-2">© 2026</span>
+            <Activity className="w-5 h-5 text-cyan-400" />
+            <span className="font-extrabold text-white text-lg">Campus<span className="text-cyan-400">TIQ</span></span>
+            <span className="text-xs text-slate-500 font-mono ml-2">© 2026</span>
           </div>
-          <p className="text-sm text-gray-400">Campus Problem Intelligence Platform · Built for Smart Institutions</p>
+          <p className="text-xs font-mono text-slate-500">Campus Problem Intelligence Platform · Smart Institution System</p>
         </div>
       </footer>
     </div>

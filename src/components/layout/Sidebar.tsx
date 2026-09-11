@@ -47,28 +47,28 @@ export default function Sidebar() {
       )}
 
       <aside
-        className={`fixed top-0 left-0 z-50 h-full bg-white dark:bg-slate-900 border-r border-gray-200 dark:border-slate-700 flex flex-col transition-all duration-300 ease-in-out
+        className={`fixed top-0 left-0 z-50 h-full bg-[#030712] border-r border-slate-800/80 flex flex-col transition-all duration-300 ease-in-out shadow-[4px_0_25px_rgba(0,0,0,0.5)]
         ${state.sidebarOpen ? 'w-64 translate-x-0' : 'w-64 -translate-x-full lg:w-20 lg:translate-x-0'}`}
       >
         {/* Logo */}
-        <div className="h-16 flex items-center justify-between px-4 border-b border-gray-100 dark:border-slate-700">
+        <div className="h-16 flex items-center justify-between px-4 border-b border-slate-800/80">
           <div className="flex items-center gap-2.5 overflow-hidden">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center flex-shrink-0 shadow-lg shadow-primary-500/25">
-              <Activity className="w-5 h-5 text-white" />
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-cyan-500 to-indigo-600 flex items-center justify-center flex-shrink-0 shadow-lg shadow-cyan-500/25">
+              <Activity className="w-5 h-5 text-slate-950 font-bold" />
             </div>
-            <span className={`font-bold text-lg text-gray-900 dark:text-white whitespace-nowrap transition-opacity duration-200 ${!state.sidebarOpen ? 'lg:opacity-0' : ''}`}>
-              Campus<span className="text-primary-600">IQ</span>
+            <span className={`font-bold text-lg text-white whitespace-nowrap transition-opacity duration-200 ${!state.sidebarOpen ? 'lg:opacity-0' : ''}`}>
+              Campus<span className="text-cyan-400">TIQ</span>
             </span>
           </div>
           <button
             onClick={() => dispatch({ type: 'TOGGLE_SIDEBAR' })}
-            className="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-800 text-gray-400 lg:block hidden"
+            className="p-1.5 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-cyan-400 lg:block hidden"
           >
             <ChevronLeft className={`w-4 h-4 transition-transform ${!state.sidebarOpen ? 'rotate-180' : ''}`} />
           </button>
           <button
             onClick={() => dispatch({ type: 'SET_SIDEBAR', payload: false })}
-            className="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-800 text-gray-400 lg:hidden"
+            className="p-1.5 rounded-lg hover:bg-slate-800 text-slate-400 lg:hidden"
           >
             <X className="w-4 h-4" />
           </button>
@@ -76,11 +76,12 @@ export default function Sidebar() {
 
         {/* Role badge */}
         <div className={`px-4 py-3 ${!state.sidebarOpen ? 'lg:px-2' : ''}`}>
-          <div className={`px-3 py-2 rounded-lg bg-primary-50 dark:bg-primary-900/20 ${!state.sidebarOpen ? 'lg:px-1 lg:flex lg:justify-center' : ''}`}>
-            <p className={`text-xs font-semibold text-primary-700 dark:text-primary-300 ${!state.sidebarOpen ? 'lg:hidden' : ''}`}>
-              {isAdmin ? '👨‍💼 Administrator' : '🎓 Student Portal'}
+          <div className={`px-3 py-2 rounded-xl bg-slate-900/90 border border-slate-800/80 ${!state.sidebarOpen ? 'lg:px-1 lg:flex lg:justify-center' : ''}`}>
+            <p className={`text-xs font-mono font-semibold text-cyan-400 flex items-center gap-1.5 ${!state.sidebarOpen ? 'lg:hidden' : ''}`}>
+              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
+              {isAdmin ? 'SYSTEM ADMIN' : 'STUDENT PORTAL'}
             </p>
-            <p className={`text-xs font-semibold text-primary-700 dark:text-primary-300 hidden ${!state.sidebarOpen ? 'lg:block' : ''}`}>
+            <p className={`text-xs font-semibold text-cyan-400 hidden ${!state.sidebarOpen ? 'lg:block' : ''}`}>
               {isAdmin ? '👨‍💼' : '🎓'}
             </p>
           </div>
@@ -102,8 +103,8 @@ export default function Sidebar() {
                   className={({ isActive }) =>
                     `flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200
                     ${isActive
-                      ? 'bg-primary-50 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 shadow-sm'
-                      : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-slate-800 hover:text-gray-900 dark:hover:text-white'
+                      ? 'bg-slate-900 border border-cyan-500/40 text-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.15)] font-semibold'
+                      : 'text-slate-400 hover:bg-slate-900/60 hover:text-slate-200 border border-transparent'
                     } ${!state.sidebarOpen ? 'lg:justify-center lg:px-2' : ''}`
                   }
                 >
@@ -112,7 +113,7 @@ export default function Sidebar() {
                     {link.label}
                   </span>
                   {link.label === 'Notifications' && unreadCount > 0 && (
-                    <span className={`ml-auto bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center ${!state.sidebarOpen ? 'lg:hidden' : ''}`}>
+                    <span className={`ml-auto bg-cyan-500 text-slate-950 text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center ${!state.sidebarOpen ? 'lg:hidden' : ''}`}>
                       {unreadCount}
                     </span>
                   )}
@@ -124,16 +125,16 @@ export default function Sidebar() {
 
         {/* User info */}
         {state.currentUser && (
-          <div className={`p-4 border-t border-gray-100 dark:border-slate-700 ${!state.sidebarOpen ? 'lg:p-2' : ''}`}>
+          <div className={`p-4 border-t border-slate-800/80 ${!state.sidebarOpen ? 'lg:p-2' : ''}`}>
             <div className={`flex items-center gap-3 ${!state.sidebarOpen ? 'lg:justify-center' : ''}`}>
-              <div className="w-9 h-9 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center text-white text-sm font-bold flex-shrink-0">
+              <div className="w-9 h-9 rounded-full bg-gradient-to-br from-cyan-500 to-indigo-600 flex items-center justify-center text-slate-950 font-bold text-sm flex-shrink-0 shadow-md shadow-cyan-500/20">
                 {state.currentUser.name.charAt(0)}
               </div>
               <div className={`flex-1 min-w-0 ${!state.sidebarOpen ? 'lg:hidden' : ''}`}>
-                <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">
+                <p className="text-sm font-semibold text-slate-200 truncate">
                   {state.currentUser.name}
                 </p>
-                <p className="text-xs text-gray-400 truncate">{state.currentUser.email}</p>
+                <p className="text-xs text-slate-400 truncate">{state.currentUser.email}</p>
               </div>
             </div>
           </div>

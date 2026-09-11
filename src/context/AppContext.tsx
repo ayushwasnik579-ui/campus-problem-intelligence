@@ -27,7 +27,7 @@ const initialState: AppState = {
   userRole: null,
   issues: mockIssues,
   notifications: mockNotifications,
-  darkMode: false,
+  darkMode: true,
   sidebarOpen: true,
 };
 
@@ -83,9 +83,17 @@ const AppContext = createContext<{
 export function AppProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(appReducer, initialState);
 
+  React.useEffect(() => {
+    if (state.darkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [state.darkMode]);
+
   return (
     <AppContext.Provider value={{ state, dispatch }}>
-      <div className={state.darkMode ? 'dark' : ''}>
+      <div className={state.darkMode ? 'dark bg-[#030712] text-slate-100 min-h-screen' : 'bg-gray-50 text-gray-900 min-h-screen'}>
         {children}
       </div>
     </AppContext.Provider>
